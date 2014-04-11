@@ -1,0 +1,60 @@
+<?php
+/**
+ *
+ * Installer for Domain Forwarder Module for ZPanel 10.0.2
+ * Version : 102
+ * Author :  Aderemi Adewale (modpluz @ ZPanel Forums)
+ * Email : goremmy@gmail.com
+ */
+
+require_once('cnf/db.php');
+require_once('dryden/db/driver.class.php');
+require_once('dryden/debug/logger.class.php');
+require_once('dryden/runtime/dataobject.class.php');
+require_once('dryden/sys/versions.class.php');
+require_once('dryden/ctrl/options.class.php');
+require_once('dryden/ctrl/auth.class.php');
+require_once('dryden/ctrl/users.class.php');
+require_once('dryden/fs/director.class.php');
+require_once('inc/dbc.inc.php');
+
+
+//install
+installModule();
+
+function installModule(){
+    global $zdbh;
+        
+    //drop database if it already exists
+    //$numrows = $zdbh->prepare("DROP TABLE IF EXISTS `x_forwarded_domains`;");
+    //$numrows->execute();
+
+   //create tables
+    $numrows = $zdbh->prepare("CREATE TABLE IF NOT EXISTS `x_forwarded_domains` (
+                                  `fd_id_pk` int(11) NOT NULL AUTO_INCREMENT,
+                                  `vh_fk_id` int(11) NOT NULL DEFAULT '0',
+                                  `fd_acc_fk` int(11) NOT NULL DEFAULT '0',
+                                  `fd_name` varchar(75) NOT NULL DEFAULT '',
+                                  `fd_type_id` tinyint(1) NOT NULL DEFAULT '2' COMMENT '1=redirect, 2=forward',
+                                  `fd_protocol` varchar(5) NOT NULL DEFAULT 'http',
+                                  `www_yn` tinyint(1) NOT NULL DEFAULT '1',
+                                  `fd_created_ts` int(30) NOT NULL DEFAULT '0',
+                                  `fd_deleted_ts` int(30) DEFAULT NULL,
+                                  PRIMARY KEY (`fd_id_pk`)
+                                ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+     $numrows->execute(); 
+     
+    $numrows = $zdbh->prepare("ALTER TABLE  zpanel_core.`x_quotas` ADD  `qt_domain_forwarders_in` INT(6) NOT NULL DEFAULT '0' AFTER `qt_fowarders_in`;");
+    $numrows->execute();
+    
+    //add invoice created column
+    try {
+        $numrows = $zdbh->prepare("ALTER TABLE  zpanel_core.`x_quotas` ADD  `qt_domain_forwarders_in` INT(6) NOT NULL DEFAULT  '0' AFTER  `qt_fowarders_in`;");
+        $numrows->execute();
+    } catch(Exception $e){
+        // column exists, continue
+    }
+         
+}
+
+?>

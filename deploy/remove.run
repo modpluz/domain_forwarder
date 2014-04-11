@@ -1,0 +1,33 @@
+<?php
+/**
+ *
+ * Un-Installer for Domain Forwarder Module for ZPanel 10.0.2
+ * Version : 102
+ * Author :  Aderemi Adewale (modpluz @ ZPanel Forums)
+ * Email : goremmy@gmail.com
+ */
+
+require_once('cnf/db.php');
+require_once('dryden/db/driver.class.php');
+require_once('dryden/debug/logger.class.php');
+require_once('dryden/runtime/dataobject.class.php');
+require_once('dryden/sys/versions.class.php');
+require_once('dryden/ctrl/options.class.php');
+require_once('dryden/ctrl/auth.class.php');
+require_once('dryden/ctrl/users.class.php');
+require_once('dryden/fs/director.class.php');
+require_once('inc/dbc.inc.php');
+
+
+//install
+removeModule();
+
+function removeModule(){
+    global $zdbh;
+        
+    //delete table
+    $numrows = $zdbh->prepare("DROP TABLE IF EXISTS `x_forwarded_domains`;");
+    $numrows->execute();
+}
+
+?>

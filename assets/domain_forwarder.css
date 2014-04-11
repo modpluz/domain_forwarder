@@ -1,0 +1,23 @@
+/* .icon-transfer-domain:before { content: '\f016'; } 
+select {
+	width: auto;
+}
+
+input[type="text"] {
+	width: 200px;
+}
+*/
+
+
+div.module-updated {
+	color: #f00;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: center;
+}
+
+div.module-version {
+	float: right;
+	margin-top: -20px;
+	font-size: 14px;
+}

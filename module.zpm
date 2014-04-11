@@ -1,0 +1,191 @@
+<@ Init @>
+<div class="zmodule_content panel" id="zmodule_header_<@ ModuleName @>">
+    <div class="panel-heading">
+        <img src="<@ ModuleIcon @>" width="35" height="35" border="0" alt="<@ ModuleName @>">
+
+        <div class="zmodule_title">
+            <@ ModuleName @>
+        </div>
+
+        <div class="zmodule_desc" id="zmodule_desc_<@ ModuleName @>"><@ ModuleDesc @></div>
+        <div class="module-version"><@ ModuleVersion @></div>
+    </div>
+    <!-- START - Check for updates added by TGates -->
+        <% if CheckUpdate %>
+            <table class="zgrid">
+                <tr>
+                      <div class="module-updated"><b><: New Version Available :></div>
+                </tr>
+            </table>
+        <% endif %>
+    <!-- END - Check for updates added by TGates -->
+
+
+<% if isEditForward %>
+	<div class="zform_wrapper">
+		<h2><: Edit Domain Forward :>:</h2>
+		<div id="edit_domain_forward_msg" class="alert alert-danger" style="display: none;"></div>
+		<form action="./?module=domain_forwarder&action=UpdateForward" method="post" id="frm_edit_domain_forward">
+           <table class="table table-stripped">
+                <tr>
+                 <th nowrap="nowrap"><: Forward Type :>:</th>
+                   <td>
+                      <select name="fd_type_id" id="fd_type_id">
+                           <@ ForwardedDomainType @>
+                      </select>
+                   </td>
+                 </tr>
+              <tr>
+                <th nowrap="nowrap"><: Forward Domain :>:</th>
+                <td><input name="fd_name" type="text" id="fd_name" size="30" value="<@ ForwardDomainName @>" /></td>                
+              </tr>
+              <tr>
+                <th nowrap="nowrap"><: To :>:</th>
+                <td>
+                   <select name="fd_protocol" id="fd_protocol" style="display: none; width: auto; margin-right: 10px;">
+                         <@ ForwardProtocols @>
+                   </select>
+                                    
+                   <select name="domain_id" id="domain_id" style="width: auto;">
+                      <option value="0"> please select </option>
+                      <% loop DomainList %>
+                      <option value="<& id &>"<& selected_yn &>><& name &></option>
+                      <% endloop %>
+                   </select>
+                </td>
+              </tr>
+              <tr>
+                <th nowrap="nowrap">&nbsp;</th>
+                <td>
+                  <input type="checkbox" name="www_yn" id="www_yn" value="1" <@ ForwardDomainWWWChecked @> /> <: Forward www. address for this domain as well :>.
+                </td>
+                </tr>
+                 <tr>
+                   <th></th>
+                   <td>
+                    <button class="btn btn-primary" type="button" name="CreateForward" value="1" id="btn_update_forward">Update</button>
+                    <button class="btn btn-default" type="button" name="CancelForward" onclick="window.location = './?module=domain_forwarder';">Cancel</button>
+                    </td>
+                 </tr>
+               </table>
+            <input type="hidden" id="fd_id" name="id" value="<@ ForwardDomainID @>">
+           <@ CSFR_Tag @>
+		</form>
+	</div>
+	<% endif %>
+
+
+
+    <div class="zgrid_wrapper">
+        <h2><: Forwarded Domains :></h2>
+        
+        <@ Result @>
+		<% if ForwardList %>
+    	<form action="./?module=domain_forwarder" id="frm_forwarded_domains" method="post">
+            <table class="table table-striped">
+                <tr>
+                    <th><: Forwarded Domain :></th>
+                    <th><: Target Domain :></th>
+                    <th><: Include WWW :></th>
+                    <th><: Forward Type :></th>
+                    <th></th>
+                </tr>
+                <% loop ForwardList %>
+                <tr>
+                    <td><& name &></td>
+                    <td><& target_domain &></td>
+                    <td><& www_yn &></td>
+                    <td><& forward_type &></td>
+                    <td>
+                        <button class="btn btn-small" type="button" name="inEdit_<& id &>" onclick="_change_action('frm_forwarded_domains','EditForward', '<& id &>');">Edit</button>
+                        <button class="btn btn-danger btn-small btn-delete-forward" rel="" type="button" name="inDelete_<& id &>" data-id="<& id &>">Delete</button>
+                    </td>
+                </tr>			
+                <% endloop %>
+            </table>
+            <input type="hidden" id="item_id" name="id" value="0">
+            <@ CSFR_Tag @>
+    	</form>
+	<% else %>
+	<: There are currently no forwarded domains configured, add a domain forward below. :>
+	<% endif %>
+    </div>
+    
+    <% if isAddDomainForwarder %>
+    <div class="zgrid_wrapper">
+
+        <% if CanAddForward %>
+		<h2><: Forward a Domain :></h2>
+		<div id="add_domain_forward_msg" class="alert alert-danger" style="display: none;"></div>
+<form action="./?module=domain_forwarder&action=ForwardDomain" method="post" id="frm_forward_domain">
+                        <table class="table table-striped">
+                            <tr>
+                                <th nowrap="nowrap"><: Forward Type :>:</th>
+                                <td>
+                                    <select name="fd_type_id" id="fd_type_id">
+                                        <option value="1">Redirect</option>
+                                        <option value="2" selected="selected">Forward</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap="nowrap"><: Forward Domain :>:</th>
+                                <td><input name="fd_name" type="text" id="fd_name" size="30" /></td>                                
+                            </tr>
+                            <tr>
+                                <th nowrap="nowrap"><: To :>:</th>
+                                <td>
+                                    <select name="fd_protocol" id="fd_protocol" style="display: none; width: auto; margin-right: 10px;">
+                                        <option value="http">http://</option>
+                                        <option value="https">https://</option>
+                                    </select>
+                                                        
+                                    <select name="domain_id" id="domain_id" style="width: auto;">
+                                        <option value="0"> please select </option>
+                                        <% loop DomainList %>
+                                            <option value="<& id &>"<& selected_yn &>><& name &></option>
+                                        <% endloop %>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th nowrap="nowrap">&nbsp;</th>
+                                <td>
+                                    <input type="checkbox" name="www_yn" id="www_yn" value="1" checked="checked" /> <: Forward www. address for this domain as well :>.
+                                </td>
+                            </tr>
+                            <!-- <tr id="tr_protocol" style="display: none;">
+                                <th nowrap="nowrap"><: Redirect Protocol :>:</th>
+                                <td>
+                                    <select name="fd_protocol" id="fd_protocol">
+                                        <option value="http">HTTP</option>
+                                        <option value="https">HTTPS</option>
+                                    </select>
+                                </td>
+                            </tr> -->
+                             <tr>
+                                <th>&nbsp;</th>
+                                <td><button class="btn btn-primary" type="submit" name="btn_create_forward" id="btn_create_forward" value="1">Create</button></td>
+                            </tr>
+                        </table>
+                        <@ CSFR_Tag @>
+                    </form>     
+        <% else %>
+            <p>&nbsp;</p><br />
+            <: You have reached the maximum domain forwarders limit :>.
+        <% endif %>
+        </div>
+
+    </div>
+    <% endif %>
+</div>
+<script>
+	var form_msgs = [];
+	form_msgs['empty_domain'] = "<: Domain cannot be empty :>!";
+	form_msgs['empty_domain_to'] = "<: Please select a valid domain to forward to :>!";
+	form_msgs['domain_forward_delete_dialog_title'] = "<: Delete Domain Forward :>?";
+	form_msgs['domain_forward_delete_confirm_msg'] = "<: Are you sure to delete selected domain forward :>?";
+	form_msgs['domain_forward_ok_btn_label'] = "<: Yes :>";
+	form_msgs['domain_forward_cancel_btn_label'] = "<: Cancel :>";
+</script>
+

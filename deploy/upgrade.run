@@ -1,0 +1,48 @@
+<?php
+/**
+ *
+ * Upgrade script for Domain Forwarder Module for ZPanel 10.0.2
+ * Version : 102
+ * Author :  Aderemi Adewale (modpluz @ ZPanel Forums)
+ * Email : goremmy@gmail.com
+ */
+
+require_once('cnf/db.php');
+require_once('dryden/db/driver.class.php');
+require_once('dryden/debug/logger.class.php');
+require_once('dryden/runtime/dataobject.class.php');
+require_once('dryden/sys/versions.class.php');
+require_once('dryden/ctrl/options.class.php');
+require_once('dryden/ctrl/auth.class.php');
+require_once('dryden/ctrl/users.class.php');
+require_once('dryden/fs/director.class.php');
+require_once('inc/dbc.inc.php');
+
+
+//install
+upgradeModule();
+
+// START - ZPX Module Updating added by TGates
+UpgradeModuleB('110', 'domain_forwarder');
+
+function UpgradeModuleB($newversion, $module){
+    global $zdbh;
+    $sql = $zdbh->prepare("UPDATE x_modules SET mo_version_in = $newversion WHERE mo_folder_vc = '$module'");
+    $sql->execute();     
+}
+// END - ZPX Module Updating added by TGates
+
+function upgradeModule(){
+    global $zdbh;
+        
+    //add max domain forwarders for packages
+    try {
+        $numrows = $zdbh->prepare("ALTER TABLE  zpanel_core.`x_quotas` ADD  `qt_domain_forwarders_in` INT(6) NOT NULL DEFAULT  '0' AFTER  `qt_fowarders_in`;");
+        $numrows->execute();
+    } catch(Exception $e){
+        // column exists, continue
+    }
+         
+}
+
+?>
