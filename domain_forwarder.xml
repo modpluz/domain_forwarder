@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <updateserver>
 	<latestversion>1.1.0</latestversion>
-	<downloadurl>http://zpx.imerlabs.com/zpp/xbilling.zpp</downloadurl>
+	<downloadurl>http://zpx.imerlabs.com/domain_forwarder.zpp</downloadurl>
 	<desc>This module enables you to setup and manage domain forwards.</desc>
 	<updatedesc>Added update checker and XML datafile.</updatedesc>
 	<authorname>Aderemi Adewale (modpluz @ ZPanel Forums)</authorname>
