@@ -1,5 +1,5 @@
-Domain Forwarder v1.1.0
-Forward domains from within zPanel(10.1.1)
+Domain Forwarder v1.1.1
+Forward domains from within Sentora(1.0)
 
 [![Build Status](https://travis-ci.org/modpluz/domain_forwarder.png?branch=master)](https://travis-ci.org/modpluz/domain_forwarder)
 

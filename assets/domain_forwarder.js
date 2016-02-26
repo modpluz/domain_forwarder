@@ -21,7 +21,7 @@ $(function() {
 			return false;
 		}
 		
-		zPanel.loader.showLoader();
+		Sentora.loader.showLoader();
 		
 		$('#frm_forward_domain').submit();
 		return true;
@@ -44,7 +44,7 @@ $(function() {
 			return false;
 		}
 		
-		zPanel.loader.showLoader();
+		Sentora.loader.showLoader();
 		
 		$('#frm_edit_domain_forward').submit();
 		return true;
@@ -53,7 +53,7 @@ $(function() {
 	$('.btn-delete-forward').on('click', function (){
 		var _id = $(this).attr('data-id');
 		//Confirm Domain Transfer
-		zPanel.dialog.confirm({
+		Sentora.dialog.confirm({
 			title: form_msgs['domain_forward_delete_dialog_title'],
 			message: form_msgs['domain_forward_delete_confirm_msg'],
 			width: 300,
@@ -70,7 +70,7 @@ $(function() {
 			cancelCallback: function() { return false; },
 			okCallback: function() { 
 				$('#frm_forwarded_domains').append('<input type="hidden" name="fd_id" value="'+_id+'">');
-				zPanel.loader.showLoader();
+				Sentora.loader.showLoader();
 				_change_action('frm_forwarded_domains','DeleteForward');
 					//$('#frm_forwarded_domains').submit(); 
 			}

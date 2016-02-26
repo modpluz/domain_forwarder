@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module>
 <name>Domain Forwarder</name>
-<version>1.1.0</version>
+<version>1.1.1</version>
 <defaultcat>Domain Management</defaultcat>
 <type>user</type>
 <desc>This module enables you to setup and manage domain forwards.</desc>
-<authorname>Aderemi Adewale (modpluz @ ZPanel Forums)</authorname>
+<authorname>Aderemi Adewale (modpluz @ Sentore Forums)</authorname>
 <authoremail>goremmy@gmail.com</authoremail>
 <authorurl>http://www.remmy.me/</authorurl>
 <updateurl>http://zpx.imerlabs.com/domain_forwarder.xml</updateurl>
